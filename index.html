@@ -24,11 +24,25 @@
             height: 100vh;
             flex-direction: row;
             align-items: stretch;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         #side-panel {
             flex-basis: 500px;
             overflow-y: scroll;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2+button {
+            margin-top: 18px;
+        }
+
+        button+table {
+            margin-top: 4px;
         }
 
         #map {
@@ -45,6 +59,8 @@
             width: 100%;
             border: 1px solid #ddd;
         }
+
+
 
         th,
         td {
@@ -69,16 +85,15 @@
         <div id="side-panel">
 
             <h2>Tourism in Vietnam by City</h2>
-            <button>Sort by number of visitors</button>
 
+            <button>Sort by number of visitors</button>
             <table>
                 <tr>
-                    <th>id</th>
-                    <th>visitors (including international)</th>
-                    <th>coordinates</th>
+                    <th>City</th>
+                    <th>Visitors (total)</th>
+                    <th>Coordinates</th>
                 </tr>
             </table>
-
         </div>
         <div id="map"></div>
 
@@ -91,7 +106,7 @@
         // Create the map object
         let map = new mapboxgl.Map({
             container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+            style: 'mapbox://styles/mapbox/navigation-day-v1', // style URL
             zoom: 4.5, // starting zoom
             center: [108.22579521684344,
                 14.267830796886756] // starting center
@@ -115,9 +130,15 @@
                 cell1 = row.insertCell(0);
                 cell2 = row.insertCell(1);
                 cell3 = row.insertCell(2);
+
+                let coordString = tourism.features[i].geometry.coordinates;
+                let lon = coordString[0];
+                let lat = coordString[1];
+                let coordinates = `${lon}, ${lat}`;
+
                 cell2.innerHTML = tourism.features[i].properties.visitors_2024_total;
                 cell1.innerHTML = tourism.features[i].properties.name;
-                cell3.innerHTML = tourism.features[i].geometry.coordinates;
+                cell3.innerHTML = coordinates;
             }
 
             //load data to the map as new layers and table on the side.
@@ -133,9 +154,9 @@
                     'type': 'circle',
                     'source': 'tourism',
                     'paint': {
-                        'circle-radius': 8,
-                        'circle-stroke-width': 2,
-                        'circle-color': 'orange',
+                        'circle-radius': 4,
+                        'circle-stroke-width': 3,
+                        'circle-color': 'darkorange',
                         'circle-stroke-color': 'black'
                     }
                 });
