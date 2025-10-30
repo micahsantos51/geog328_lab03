@@ -1,0 +1,175 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.8342,
+          21.0278
+        ]
+      },
+      "properties": {
+        "name": "Hanoi",
+        "province": "Hà Nội",
+        "visitors_2024_total": 28200000,
+        "international_2024": 6200000,
+        "notes": "Total visitors in 2024 (includes domestic + international)."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.6297,
+          10.8231
+        ]
+      },
+      "properties": {
+        "name": "Ho Chi Minh City",
+        "province": "Ho Chi Minh",
+        "visitors_2024_total": 44100000,
+        "international_2024": 6100000,
+        "notes": "Estimated total (domestic + international) based on municipal reports."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.2022,
+          16.0544
+        ]
+      },
+      "properties": {
+        "name": "Da Nang",
+        "province": "Da Nang",
+        "visitors_2024_total": 10900000,
+        "international_2024": 4100000,
+        "notes": "City-level total visitors for 2024."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.338,
+          15.8801
+        ]
+      },
+      "properties": {
+        "name": "Hoi An",
+        "province": "Quảng Nam",
+        "visitors_2024_total": 4430000,
+        "international_2024": 91000,
+        "notes": "Hoi An Ancient Town total visitors in 2024 (includes day visitors)."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.1967,
+          12.2388
+        ]
+      },
+      "properties": {
+        "name": "Nha Trang (Khanh Hoa)",
+        "province": "Khánh Hòa",
+        "visitors_2024_total": 10800000,
+        "international_2024": 4700000,
+        "notes": "Khanh Hoa province totals (Nha Trang is the main city)."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5909,
+          16.4637
+        ]
+      },
+      "properties": {
+        "name": "Hue",
+        "province": "Thừa Thiên Huế",
+        "visitors_2024_total": 3900000,
+        "international_2024": 1450000,
+        "notes": "Thừa Thiên Huế totals for 2024."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.984,
+          10.239
+        ]
+      },
+      "properties": {
+        "name": "Phu Quoc",
+        "province": "Kiên Giang (Phú Quốc Special Zone)",
+        "visitors_2024_total": 5900000,
+        "international_2024": 960000,
+        "notes": "Phu Quoc island totals for 2024."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.4583,
+          11.9404
+        ]
+      },
+      "properties": {
+        "name": "Da Lat",
+        "province": "Lâm Đồng",
+        "visitors_2024_total": 10000000,
+        "international_2024": 600000,
+        "notes": "Lam Dong province totals (Da Lat is the main city)."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.7469,
+          10.0452
+        ]
+      },
+      "properties": {
+        "name": "Can Tho",
+        "province": "Cần Thơ",
+        "visitors_2024_total": 6100000,
+        "international_2024": null,
+        "notes": "City target and reported arrivals around 6.1M for 2024."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.0899,
+          20.954
+        ]
+      },
+      "properties": {
+        "name": "Ha Long",
+        "province": "Quảng Ninh",
+        "visitors_2024_total": 5200000,
+        "international_2024": 900000,
+        "notes": "Halong Bay area / Quảng Ninh visitor estimates for 2024."
+      }
+    }
+  ]
+}

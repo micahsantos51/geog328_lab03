@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html lang="eng">
+<html lang="en-US">
 
 <head>
-    <!--Including mapbox for mapmaking!-->
     <meta charset="utf-8">
-    <title>Earthquake List</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl-js" rel="stylesheet">
+    <title>Vietnam Tourism</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+    <!-- Including the Mapbox GL CSS file -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css" rel="stylesheet">
+
+    <!-- Including the Mapbox GL JS file -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
+
     <style>
+        /* CSS styles for the layout and components */
         body {
             margin: 0;
             padding: 0;
@@ -50,83 +55,154 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        @media screen and (max-width: 1024px) {
+            #side-panel {
+                display: none;
+            }
+        }
     </style>
 </head>
 
 <body>
     <main id="container">
-        <div id='side-panel'>
-            <h2>Earthquake List</h2>
-            <button>Sort by Magnitute</button>
+        <div id="side-panel">
+
+            <h2>Tourism in Vietnam by City</h2>
+            <button>Sort by number of visitors</button>
 
             <table>
                 <tr>
                     <th>id</th>
-                    <th>magnitude</th>
-                    <th>timestamp</th>
+                    <th>visitors (including international)</th>
+                    <th>coordinates</th>
                 </tr>
             </table>
+
         </div>
         <div id="map"></div>
+
     </main>
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWljYWhzYW50b3M1MSIsImEiOiJjbWg1OWVvZmswM3BkMmxwbW4zcm56YXN6In0.QV0N_53wrz6h1VyLTIyUtQ';
+        // Define the Mapbox access token
+        mapboxgl.accessToken =
+            'pk.eyJ1Ijoiemhhb2JvIiwiYSI6ImNqaW85NzNrdDA3OXczcHQ5aTZvYmtjc2gifQ.ummEQxsRIweCIdv9CRRzOw';
 
+        // Create the map object
         let map = new mapboxgl.Map({
-            containter: 'map',
-            style: 'mapbox://styles/mapbox/satellite-v9',
-            zoom: 5.5,
-            center: [138, 38],
-        })
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+            zoom: 4.5, // starting zoom
+            center: [108.22579521684344,
+                14.267830796886756] // starting center
+        });
+
 
         async function geojsonFetch() {
-            let response, earthquakes, japan, table;
-            response = await fetch('assets/earthquakes.geojson');
-            earthquakes = await response.json();
-            response = await fetch('assets/japan.json');
-            japan = await response.json();
-        };
+
+            let response, tourism, vietnam, table;
+            response = await fetch('assets/vietnam_major_cities_tourism_2024.geojson');
+            tourism = await response.json();
+            response = await fetch('assets/vietnam.json');
+            vietnam = await response.json();
+            table = document.getElementsByTagName("table")[0];
+
+            let row, cell1, cell2, cell3;
+
+            for (let i = 0; i < tourism.features.length; i++) {
+                // Create an empty <tr> element and add it to the 1st position of the table:
+                row = table.insertRow(-1);
+                cell1 = row.insertCell(0);
+                cell2 = row.insertCell(1);
+                cell3 = row.insertCell(2);
+                cell2.innerHTML = tourism.features[i].properties.visitors_2024_total;
+                cell1.innerHTML = tourism.features[i].properties.name;
+                cell3.innerHTML = tourism.features[i].geometry.coordinates;
+            }
+
+            //load data to the map as new layers and table on the side.
+            map.on('load', function loadingData() {
+
+                map.addSource('tourism', {
+                    type: 'geojson',
+                    data: tourism
+                });
+
+                map.addLayer({
+                    'id': 'tourism-layer',
+                    'type': 'circle',
+                    'source': 'tourism',
+                    'paint': {
+                        'circle-radius': 8,
+                        'circle-stroke-width': 2,
+                        'circle-color': 'orange',
+                        'circle-stroke-color': 'black'
+                    }
+                });
+
+
+                map.addSource('vietnam', {
+                    type: 'geojson',
+                    data: vietnam
+                });
+
+                map.addLayer({
+                    'id': 'vietnam-layer',
+                    'type': 'fill',
+                    'source': 'vietnam',
+                    'paint': {
+                        'fill-color': '#0080ff', // blue color fill
+                        'fill-opacity': 0.5
+                    }
+                });
+
+            });
+
+        }
 
         geojsonFetch();
 
-        //load data to the map as new layers and table on the side.
-        map.on('load', function loadingData() {
+        let btn = document.getElementsByTagName("button")[0];
 
-            map.addSource('earthquakes', {
-                type: 'geojson',
-                data: earthquakes
-            });
+        btn.addEventListener('click', sortTable);
 
-            map.addLayer({
-                'id': 'earthquakes-layer',
-                'type': 'circle',
-                'source': 'earthquakes',
-                'paint': {
-                    'circle-radius': 8,
-                    'circle-stroke-width': 2,
-                    'circle-color': 'red',
-                    'circle-stroke-color': 'white'
+        // define the function to sort table
+        function sortTable(e) {
+            let table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementsByTagName("table")[0];
+            switching = true;
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+                    x = parseFloat(rows[i].getElementsByTagName("td")[1].innerHTML);
+                    y = parseFloat(rows[i + 1].getElementsByTagName("td")[1].innerHTML);
+                    //check if the two rows should switch place:
+                    if (x < y) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
                 }
-            });
-
-
-            map.addSource('japan', {
-                type: 'geojson',
-                data: japan
-            });
-
-            map.addLayer({
-                'id': 'japan-layer',
-                'type': 'fill',
-                'source': 'japan',
-                'paint': {
-                    'fill-color': '#0080ff', // blue color fill
-                    'fill-opacity': 0.5
+                if (shouldSwitch) {
+                    /*If a switch has been marked, make the switch
+                    and mark that a switch has been done:*/
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
                 }
-            });
-
-        });
+            }
+        }
     </script>
+
 </body>
 
 </html>
